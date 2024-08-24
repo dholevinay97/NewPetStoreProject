@@ -13,68 +13,68 @@ import io.restassured.response.Response;
 
 public class UserTests {
 
-	Faker faker;
-	User userPayload;
-	public Logger logger;
+    Faker faker;
+    User userPayload;
+    public Logger logger;
 
-	@BeforeClass
-	public void setupData() {
-		faker = new Faker();
-		userPayload = new User();
-		userPayload.setId(faker.idNumber().hashCode());
-		userPayload.setUsername(faker.name().username());
-		userPayload.setFirstName(faker.name().firstName());
-		userPayload.setLastName(faker.name().lastName());
-		userPayload.setEmail(faker.internet().safeEmailAddress());
-		userPayload.setPassword(faker.internet().password(5, 10));
-		userPayload.setPhone(faker.phoneNumber().cellPhone());
+    @BeforeClass
+    public void setupData() {
+        faker = new Faker();
+        userPayload = new User();
+        userPayload.setId(faker.idNumber().hashCode());
+        userPayload.setUsername(faker.name().username());
+        userPayload.setFirstName(faker.name().firstName());
+        userPayload.setLastName(faker.name().lastName());
+        userPayload.setEmail(faker.internet().safeEmailAddress());
+        userPayload.setPassword(faker.internet().password(5, 10));
+        userPayload.setPhone(faker.phoneNumber().cellPhone());
 
-		// logging
-		logger = LogManager.getLogger(this.getClass());
+        // logging
+        logger = LogManager.getLogger(this.getClass());
 
-	}
+    }
 
-	@Test(priority = 1)
-	public void testPostUser() {
-		logger.info("**************** Creating User ******************");
-		Response response = UserEndPoints2.createUser(userPayload);
-		response.then().log().all();
-		Assert.assertEquals(response.getStatusCode(), 200);
-		logger.info("**************** User is created ******************");
-	}
+    @Test(priority = 1)
+    public void testPostUser() {
+        logger.info("**************** Creating User ******************");
+        Response response = UserEndPoints2.createUser(userPayload);
+        response.then().log().all();
+        Assert.assertEquals(response.getStatusCode(), 200);
+        logger.info("**************** User is created ******************");
+    }
 
-	@Test(priority = 2)
-	public void testGetUserByName() {
-		logger.info("**************** Reading User info ******************");
-		Response response = UserEndPoints2.readUser(this.userPayload.getUsername());
-		response.then().log().all();
-		Assert.assertEquals(response.getStatusCode(), 200);
-		logger.info("**************** User info is displayed******************");
-	}
+    @Test(priority = 2)
+    public void testGetUserByName() {
+        logger.info("**************** Reading User info ******************");
+        Response response = UserEndPoints2.readUser(this.userPayload.getUsername());
+        response.then().log().all();
+        Assert.assertEquals(response.getStatusCode(), 200);
+        logger.info("**************** User info is displayed******************");
+    }
 
-	@Test(priority = 3)
-	public void updateUserByName() {
-		logger.info("**************** Updating User info ******************");
-		userPayload.setFirstName(faker.name().firstName());
-		userPayload.setLastName(faker.name().lastName());
-		userPayload.setEmail(faker.internet().safeEmailAddress());
-		Response response = UserEndPoints2.updateUser(this.userPayload.getUsername(), userPayload);
-		response.then().log().all();
-		Assert.assertEquals(response.getStatusCode(), 200);
+    @Test(priority = 3)
+    public void updateUserByName() {
+        logger.info("**************** Updating User info ******************");
+        userPayload.setFirstName(faker.name().firstName());
+        userPayload.setLastName(faker.name().lastName());
+        userPayload.setEmail(faker.internet().safeEmailAddress());
+        Response response = UserEndPoints2.updateUser(this.userPayload.getUsername(), userPayload);
+        response.then().log().all();
+        Assert.assertEquals(response.getStatusCode(), 200);
 
-		Response responseAfterUpdate = UserEndPoints2.readUser(this.userPayload.getUsername());
-		response.then().log().all();
-		Assert.assertEquals(responseAfterUpdate.getStatusCode(), 200);
-		logger.info("**************** User info is updated ******************");
-	}
+        Response responseAfterUpdate = UserEndPoints2.readUser(this.userPayload.getUsername());
+        response.then().log().all();
+        Assert.assertEquals(responseAfterUpdate.getStatusCode(), 200);
+        logger.info("**************** User info is updated ******************");
+    }
 
-	@Test(priority = 4)
-	public void deleteUserByName() {
-		logger.info("**************** Deleting User  ******************");
-		Response response = UserEndPoints2.deleteUser(this.userPayload.getUsername());
-		response.then().log().all();
-		Assert.assertEquals(response.getStatusCode(), 200);
-		logger.info("**************** User is deleted ******************");
-	}
+    @Test(priority = 4)
+    public void deleteUserByName() {
+        logger.info("**************** Deleting User  ******************");
+        Response response = UserEndPoints2.deleteUser(this.userPayload.getUsername());
+        response.then().log().all();
+        Assert.assertEquals(response.getStatusCode(), 200);
+        logger.info("**************** User is deleted ******************");
+    }
 
 }
